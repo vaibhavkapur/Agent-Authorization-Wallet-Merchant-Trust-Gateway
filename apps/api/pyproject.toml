@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aaw-api"
+version = "0.1.0"
+description = "Wallet API: proposals, consent, authorizations, verifications, executions, evidence"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "aaw-domain",
+    "aaw-ap2",
+    "aaw-vi",
+    "aaw-tap",
+    "aaw-exec",
+    "aaw-signer"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aaw_api*"]

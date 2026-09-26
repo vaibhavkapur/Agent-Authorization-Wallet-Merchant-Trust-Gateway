@@ -1,0 +1,103 @@
+# Local demo topology. Every participant is a simulated test participant.
+#
+#   web (Next.js)  →  api (wallet + simulated agent + payment verifier + coordinator)
+#                       ├─ gateway  (merchant gateway: TAP + merchant-side verification)
+#                       ├─ issuer   (test credential issuer)
+#                       ├─ registry (test agent registry for TAP keys)
+#                       └─ worker   (expiry / stale-claim reconciliation)
+#   db (PostgreSQL) shared by the Python services; keys in the shared ./.keys volume so
+#   each role's signer and every verifier's trust store agree on the same test keys.
+
+x-python: &python
+  build: .
+  environment: &python-env
+    DATABASE_URL: postgresql+psycopg2://aaw:aaw@db:5432/aaw
+    AAW_KEYS_DIR: /keys
+    AAW_ISSUER_ID: https://issuer.aaw.test
+    AAW_GATEWAY_ID: urn:aaw:merchant-gateway
+    AAW_PROCESSOR_ID: urn:aaw:payment-processor
+    AAW_PAYMENT_AUDIENCE: urn:aaw:verifier:payment
+    AAW_GATEWAY_AUTHORITY: gateway.aaw.test
+    AAW_ADMIN_TOKEN: dev-admin-token
+    AAW_ARTIFACT_KEY: dev-only-artifact-key-not-for-production
+  volumes:
+    - keys:/keys
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: aaw
+      POSTGRES_PASSWORD: aaw
+      POSTGRES_DB: aaw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aaw -d aaw"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "5432:5432"
+
+  api:
+    <<: *python
+    environment:
+      <<: *python-env
+      AAW_GATEWAY_MODE: remote
+      AAW_GATEWAY_URL: http://gateway:8010
+      AAW_ISSUER_URL: http://issuer:8020
+      AAW_CORS_ORIGINS: http://localhost:3000
+      AAW_EXPOSE_DEMO_TOKENS: "1"
+    command: uvicorn aaw_api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      gateway:
+        condition: service_started
+      issuer:
+        condition: service_started
+
+  gateway:
+    <<: *python
+    environment:
+      <<: *python-env
+      AAW_API_URL: http://api:8000
+    command: uvicorn aaw_gateway.main:app --host 0.0.0.0 --port 8010
+    ports:
+      - "8010:8010"
+
+  issuer:
+    <<: *python
+    command: uvicorn aaw_issuer.main:app --host 0.0.0.0 --port 8020
+    ports:
+      - "8020:8020"
+
+  registry:
+    <<: *python
+    command: uvicorn aaw_registry.main:app --host 0.0.0.0 --port 8030
+    ports:
+      - "8030:8030"
+
+  worker:
+    <<: *python
+    environment:
+      <<: *python-env
+      AAW_WORKER_INTERVAL: "5"
+    command: python -m aaw_exec.worker
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  keys:

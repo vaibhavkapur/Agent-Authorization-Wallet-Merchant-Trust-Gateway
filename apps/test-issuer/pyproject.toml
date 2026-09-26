@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aaw-issuer"
+version = "0.1.0"
+description = "Test credential issuer. Test participant, not a production issuer."
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "aaw-domain",
+    "aaw-signer",
+    "aaw-ap2",
+    "aaw-vi"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aaw_issuer*"]

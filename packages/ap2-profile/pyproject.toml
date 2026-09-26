@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aaw-ap2"
+version = "0.1.0"
+description = "AP2 v0.2 profile: delegate SD-JWT mandate chain build/verify"
+requires-python = ">=3.9"
+dependencies = [
+    "jwcrypto>=1.5",
+    "cryptography>=42",
+    "aaw-signer",
+    "aaw-domain"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aaw_ap2*"]

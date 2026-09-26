@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aaw-gateway"
+version = "0.1.0"
+description = "Merchant gateway: TAP verification + merchant-side mandate verification"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "aaw-domain",
+    "aaw-ap2",
+    "aaw-vi",
+    "aaw-tap",
+    "aaw-signer"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aaw_gateway*"]
