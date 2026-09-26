@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aaw-signer"
+version = "0.1.0"
+description = "Signer boundary: key handles, JWS helpers, dev keystore, user signing component"
+requires-python = ">=3.9"
+dependencies = [
+    "cryptography>=42",
+    "jwcrypto>=1.5"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aaw_signer*"]

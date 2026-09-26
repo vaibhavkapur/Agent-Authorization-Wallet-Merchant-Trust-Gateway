@@ -1,0 +1,1 @@
+sig2=("@authority" "@path"); created=1735689600; expires=1735693200; keyId="key-id"; alg="rsa-pss-sha256"; nonce="123"; tag="agent-payer-auth"
