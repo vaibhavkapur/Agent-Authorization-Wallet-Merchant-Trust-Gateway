@@ -1,5 +1,7 @@
 # Demo guide
 
+[Documentation home](../index.md)
+
 ## Setup
 
 ### Option 1 — single process (no Docker, SQLite)

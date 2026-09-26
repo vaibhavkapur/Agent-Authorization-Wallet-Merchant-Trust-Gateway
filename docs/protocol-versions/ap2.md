@@ -1,5 +1,7 @@
 # AP2 profile (v0.2) — implementation notes
 
+[Documentation home](../index.md)
+
 Package: `packages/ap2-profile/aaw_ap2`. Version string reported by the API:
 `ap2-v0.2@e1ea56d+draft-gco-oauth-delegate-sd-jwt-00`.
 
