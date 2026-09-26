@@ -1,5 +1,7 @@
 # Verifiable Intent profile (draft v0.1) — implementation notes
 
+[Documentation home](../index.md)
+
 Package: `packages/vi-profile/aaw_vi`. Version string: `verifiable-intent-draft-v0.1@356c296`.
 
 The reference implementation (`src/verifiable_intent` at commit `356c296`) is vendored **unmodified**

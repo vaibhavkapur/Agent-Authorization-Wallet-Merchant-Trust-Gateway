@@ -1,5 +1,7 @@
 # Pinned protocol revisions
 
+[Documentation home](../index.md)
+
 All normative inputs were captured on **2026-09-26**. Nothing here is a network
 certification; every issuer, registry, merchant and processor is a local test
 participant.
