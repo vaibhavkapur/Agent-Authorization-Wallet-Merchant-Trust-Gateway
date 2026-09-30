@@ -1,5 +1,7 @@
 # TAP profile — implementation notes
 
+[Documentation home](../index.md)
+
 Package: `packages/tap-verifier/aaw_tap`. Pinned to the Visa sample implementation
 (`visa/trusted-agent-protocol` @ `16d59bd`), which uses RFC 9421 HTTP Message Signatures.
 

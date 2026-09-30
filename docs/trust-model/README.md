@@ -1,5 +1,7 @@
 # Trust model
 
+[Documentation home](../index.md)
+
 ## Participants and keys
 
 Every participant has a distinct key. Private keys exist only inside the signer boundary
